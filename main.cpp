@@ -10,5 +10,5 @@
 using namespace std;
 
 int main(){
-    string path;
+    string s;
  }
