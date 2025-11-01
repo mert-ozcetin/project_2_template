@@ -8,11 +8,6 @@
 
 using namespace std;
 
-struct bucket{
-    vector<int> idsVec;
-    forward_list<int> idsList;
-};
-
 struct person{
     //generic info
     int id,age,steps,sleephrs,watIntL,caloriesCon,bmi,resting_heartR,systolic_bp,diastolic_bp,cholesterol;
@@ -36,6 +31,15 @@ struct person{
 
     //need to create a formula for risk
     int risk;
+
+    bool operator ==(const Person& x) const {
+         return id = x.id;
+    }
+};
+
+struct bucket{
+    vector<Person> PerVec;
+    forward_list<Person> PerList;
 };
 
 //load data , will handle the initial data processing and create the complete hash map
@@ -75,8 +79,8 @@ void customizeId(int id, unordered_map<int, bucket> &data){}
 void display(int id, unordered_map<int, bucket> &data){}
 
 //our sorting algorithms - will sort based on risk factor not id.
-void merge_sort(forward_list<int> &ids) {}
-void quick_sort(vector<int> &ids) {}
+void merge_sort(forward_list<Person> &list) {}
+void quick_sort(vector<Person> &vec) {}
 
 //each function will use our sorting alg on each data structure and return the right value;
 void nth_ind_highest(int n, unordered_map<int, bucket> &data,int factor){}
