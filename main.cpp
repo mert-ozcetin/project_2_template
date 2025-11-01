@@ -38,14 +38,14 @@ unordered_map<int, Bucket> loadData(const string& path) {
         people.push_back(p);
 
         // assign to buckets based on factor attributes
-        (p.gender ? data[MALE] : data[FEMALE]).idsVec.push_back(p.id);
-        (p.smoker ? data[SMOKER] : data[NON_SMOKER]).idsVec.push_back(p.id);
-        (p.alcohol ? data[ALCOHOL] : data[NON_ALCOHOL]).idsVec.push_back(p.id);
-        (p.famHistory ? data[FAMILY_HISTORY] : data[NO_FAMILY_HISTORY]).idsVec.push_back(p.id);
-        (p.atRisk ? data[AT_RISK] : data[NOT_AT_RISK]).idsVec.push_back(p.id);
+        (p.gender ? data[MALE] : data[FEMALE]).PerVec.push_back(p);
+        (p.smoker ? data[SMOKER] : data[NON_SMOKER]).PerVec.push_back(p);
+        (p.alcohol ? data[ALCOHOL] : data[NON_ALCOHOL]).PerVec.push_back(p);
+        (p.famHistory ? data[FAMILY_HISTORY] : data[NO_FAMILY_HISTORY]).PerVec.push_back(p);
+        (p.atRisk ? data[AT_RISK] : data[NOT_AT_RISK]).PerVec.push_back(p);
 
         //  add to linked lists for MergeSort
-        (p.gender ? data[MALE] : data[FEMALE]).idsList.push_front(p.id);
+        (p.gender ? data[MALE] : data[FEMALE]).PerList.push_front(p);
     }
 
     file.close();
@@ -80,8 +80,8 @@ void display(int id, unordered_map<int, Bucket>& data) {
 }
 
 //sorting
-void merge_sort(forward_list<int>& ids) {}
-void quick_sort(vector<int>& ids) {}
+void merge_sort(forward_list<Person> &list) {}
+void quick_sort(vector<Person> &vec) {}
 
 void nth_ind_highest(int n, unordered_map<int, Bucket>& data, int factor) {
 }
