@@ -213,3 +213,7 @@ void deleteId(int id, unordered_map<int, Bucket>& data) {
         bucket.idsList.remove(id);
     }
 }
+
+int main() {
+    return 0;
+}
