@@ -143,3 +143,43 @@ int compareRecords(const HealthRecord& lhs, const HealthRecord& rhs, SortField f
     }
     return 0;
 }
+
+Comparator makeComparatorImpl(SortField field, bool descending) {
+    return [field, descending](const HealthRecord& lhs, const HealthRecord& rhs) {
+        const int comparison = compareRecords(lhs, rhs, field);
+        if (comparison == 0) {
+            return lhs.id < rhs.id;
+        }
+        if (descending) {
+            return comparison > 0;
+        }
+        return comparison < 0;
+    };
+}
+
+void mergeSortImpl(std::vector<HealthRecord>& records, std::vector<HealthRecord>& buffer, std::size_t left, std::size_t right, const Comparator& comparator) {
+    if (right - left <= 1) {
+        return;
+    }
+    const std::size_t mid = left + (right - left) / 2;
+    mergeSortImpl(records, buffer, left, mid, comparator);
+    mergeSortImpl(records, buffer, mid, right, comparator);
+
+    std::size_t i = left;
+    std::size_t j = mid;
+    std::size_t k = left;
+    while (i < mid && j < right) {
+        if (comparator(records[i], records[j])) {
+            buffer[k++] = records[i++];
+        } else {
+            buffer[k++] = records[j++];
+        }
+    }
+    while (i < mid) {
+        buffer[k++] = records[i++];
+    }
+    while (j < right) {
+        buffer[k++] = records[j++];
+    }
+    std::copy(buffer.begin() + static_cast<std::ptrdiff_t>(left), buffer.begin() + static_cast<std::ptrdiff_t>(right), records.begin() + static_cast<std::ptrdiff_t>(left));
+}
