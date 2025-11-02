@@ -326,3 +326,27 @@ std::vector<HealthRecord> mergeSortTopN(const std::string& csvPath, SortField fi
 std::vector<HealthRecord> mergeSortTopN(const std::string& csvPath, const std::string& field, bool descending, std::size_t topN) {
     return mergeSortTopN(csvPath, parseSortField(field), descending, topN);
 }
+
+
+void printTopRecords(const std::vector<HealthRecord>& records, std::size_t topN, std::ostream& os) {
+    if (records.empty()) {
+        os << "No records to display." << std::endl;
+        return;
+    }
+
+    os << "id,age,gender,bmi,daily_steps,sleep_hours,water_intake_l,calories_consumed,";
+    os << "smoker,alcohol,resting_hr,systolic_bp,diastolic_bp,cholesterol,family_history,disease_risk\n";
+
+    const std::size_t count = std::min(topN, records.size());
+    os << std::fixed << std::setprecision(1);
+    for (std::size_t index = 0; index < count; ++index) {
+        const auto& record = records[index];
+        os << record.id << ',' << record.age << ',' << record.gender << ',' << std::setprecision(1) << record.bmi << ',' << record.dailySteps << ',' << std::setprecision(1) << record.sleepHours << ','
+           << std::setprecision(1) << record.waterIntakeLiters << ',' << record.caloriesConsumed << ',' << static_cast<int>(record.smoker) << ',' << static_cast<int>(record.alcohol) << ',' << record.restingHeartRate << ','
+           << record.systolicBloodPressure << ',' << record.diastolicBloodPressure << ',' << record.cholesterol << ',' << static_cast<int>(record.familyHistory) << ',' << static_cast<int>(record.diseaseRisk) << '\n';
+    }
+}
+
+}
+
+}
