@@ -18,3 +18,15 @@ std::string toLowerCopy(const std::string& value) {
     });
     return lower;
 }
+
+std::string normalizeFieldName(const std::string& fieldName) {
+    std::string normalized;
+    normalized.reserve(fieldName.size());
+    for (unsigned char ch : fieldName) {
+        if (std::isspace(ch) || ch == '_') {
+            continue;
+        }
+        normalized.push_back(static_cast<char>(std::tolower(ch)));
+    }
+    return normalized;
+}
