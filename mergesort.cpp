@@ -95,3 +95,51 @@ int compareGender(const std::string& lhs, const std::string& rhs) {
     }
     return 0;
 }
+
+int compareRecords(const HealthRecord& lhs, const HealthRecord& rhs, SortField field) {
+    auto compareIntegral = [](auto a, auto b) {
+        if (a < b) {
+            return -1;
+        }
+        if (a > b) {
+            return 1;
+        }
+        return 0;
+    };
+
+    switch (field) {
+        case SortField::Id:
+            return compareIntegral(lhs.id, rhs.id);
+        case SortField::Age:
+            return compareIntegral(lhs.age, rhs.age);
+        case SortField::Gender:
+            return compareGender(lhs.gender, rhs.gender);
+        case SortField::BodyMassIndex:
+            return compareIntegral(lhs.bmi, rhs.bmi);
+        case SortField::DailySteps:
+            return compareIntegral(lhs.dailySteps, rhs.dailySteps);
+        case SortField::SleepHours:
+            return compareIntegral(lhs.sleepHours, rhs.sleepHours);
+        case SortField::WaterIntake:
+            return compareIntegral(lhs.waterIntakeLiters, rhs.waterIntakeLiters);
+        case SortField::CaloriesConsumed:
+            return compareIntegral(lhs.caloriesConsumed, rhs.caloriesConsumed);
+        case SortField::Smoker:
+            return compareIntegral(lhs.smoker, rhs.smoker);
+        case SortField::Alcohol:
+            return compareIntegral(lhs.alcohol, rhs.alcohol);
+        case SortField::RestingHeartRate:
+            return compareIntegral(lhs.restingHeartRate, rhs.restingHeartRate);
+        case SortField::SystolicBloodPressure:
+            return compareIntegral(lhs.systolicBloodPressure, rhs.systolicBloodPressure);
+        case SortField::DiastolicBloodPressure:
+            return compareIntegral(lhs.diastolicBloodPressure, rhs.diastolicBloodPressure);
+        case SortField::Cholesterol:
+            return compareIntegral(lhs.cholesterol, rhs.cholesterol);
+        case SortField::FamilyHistory:
+            return compareIntegral(lhs.familyHistory, rhs.familyHistory);
+        case SortField::DiseaseRisk:
+            return compareIntegral(lhs.diseaseRisk, rhs.diseaseRisk);
+    }
+    return 0;
+}
