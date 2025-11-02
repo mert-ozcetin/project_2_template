@@ -53,3 +53,45 @@ bool parseInt(const std::string& token, int& destination) {
         return false;
     }
 }
+
+bool parseDouble(const std::string& token, double& destination) {
+    try {
+        size_t processed = 0;
+        const double parsed = std::stod(token, &processed);
+        if (processed != token.size()) {
+            return false;
+        }
+        destination = parsed;
+        return true;
+    } catch (const std::exception&) {
+        return false;
+    }
+}
+
+bool parseBool(const std::string& token, bool& destination) {
+    int numeric = 0;
+    if (!parseInt(token, numeric)) {
+        return false;
+    }
+    if (numeric == 0) {
+        destination = false;
+        return true;
+    }
+    if (numeric == 1) {
+        destination = true;
+        return true;
+    }
+    return false;
+}
+
+int compareGender(const std::string& lhs, const std::string& rhs) {
+    const std::string lhsLower = toLowerCopy(lhs);
+    const std::string rhsLower = toLowerCopy(rhs);
+    if (lhsLower < rhsLower) {
+        return -1;
+    }
+    if (lhsLower > rhsLower) {
+        return 1;
+    }
+    return 0;
+}
