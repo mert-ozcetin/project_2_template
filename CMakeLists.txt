@@ -7,5 +7,8 @@ add_compile_options(-Wall -Wextra -Wpedantic -O2)
 
 add_executable(project2
     main.cpp
+    mergesort.cpp
+    quicksort.cpp
+    heapsort.cpp
 )
 
