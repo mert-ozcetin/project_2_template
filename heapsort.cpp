@@ -24,3 +24,24 @@ void heapSort(std::vector<HealthRecord>& records, const Comparator& comparator) 
 
     records = std::move(sorted);
 }
+
+
+std::vector<HealthRecord> heapSortTopN(const std::vector<HealthRecord>& records, SortField field, bool descending, std::size_t topN) {
+    std::vector<HealthRecord> sorted = records;
+    heapSort(sorted, makeComparator(field, descending));
+    if (sorted.size() > topN) {
+        sorted.resize(topN);
+    }
+    return sorted;
+}
+
+std::vector<HealthRecord> heapSortTopN(const std::string& csvPath, SortField field, bool descending, std::size_t topN) {
+    const auto records = loadHealthRecords(csvPath);
+    return heapSortTopN(records, field, descending, topN);
+}
+
+std::vector<HealthRecord> heapSortTopN(const std::string& csvPath, const std::string& field, bool descending, std::size_t topN) {
+    return heapSortTopN(csvPath, parseSortField(field), descending, topN);
+}
+
+}  // namespace sorting
