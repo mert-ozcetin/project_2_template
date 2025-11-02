@@ -25,8 +25,7 @@ string trimCopy(const string& input) {
 }
 
 void logRowError(size_t lineNumber, const string& field, const string& value) {
-    cerr << "Warning: Skipping line " << lineNumber << " due to invalid "
-         << field << " value '" << value << "'." << endl;
+    cerr << "Warning: Skipping line " << lineNumber << " due to invalid " << field << " value '" << value << "'." << endl;
 }
 
 bool parseIntField(const string& token, int& destination) {
