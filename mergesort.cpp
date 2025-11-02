@@ -30,3 +30,26 @@ std::string normalizeFieldName(const std::string& fieldName) {
     }
     return normalized;
 }
+
+std::string trimCopy(const std::string& value) {
+    const auto first = value.find_first_not_of(" \t\r\n");
+    if (first == std::string::npos) {
+        return "";
+    }
+    const auto last = value.find_last_not_of(" \t\r\n");
+    return value.substr(first, last - first + 1);
+}
+
+bool parseInt(const std::string& token, int& destination) {
+    try {
+        size_t processed = 0;
+        const int parsed = std::stoi(token, &processed);
+        if (processed != token.size()) {
+            return false;
+        }
+        destination = parsed;
+        return true;
+    } catch (const std::exception&) {
+        return false;
+    }
+}
