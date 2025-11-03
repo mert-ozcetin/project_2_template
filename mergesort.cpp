@@ -184,6 +184,8 @@ void mergeSortImpl(std::vector<HealthRecord>& records, std::vector<HealthRecord>
     std::copy(buffer.begin() + static_cast<std::ptrdiff_t>(left), buffer.begin() + static_cast<std::ptrdiff_t>(right), records.begin() + static_cast<std::ptrdiff_t>(left));
 }
 
+}  
+
 SortField parseSortField(const std::string& fieldName) {
     const std::string normalized = normalizeFieldName(fieldName);
     if (normalized == "id") {
@@ -209,119 +211,7 @@ SortField parseSortField(const std::string& fieldName) {
     }
     if (normalized == "calories" || normalized == "caloriesconsumed") {
         return SortField::CaloriesConsumed;
-    }
-    if (normalized == "smoker") {
-        return SortField::Smoker;
-    }
-    if (normalized == "alcohol") {
-        return SortField::Alcohol;
-    }
-    if (normalized == "restinghr" || normalized == "restingheartrate") {
-        return SortField::RestingHeartRate;
-    }
-    if (normalized == "systolicbp" || normalized == "systolicbloodpressure") {
-        return SortField::SystolicBloodPressure;
-    }
-    if (normalized == "diastolicbp" || normalized == "diastolicbloodpressure") {
-        return SortField::DiastolicBloodPressure;
-    }
-    if (normalized == "cholesterol") {
-        return SortField::Cholesterol;
-    }
-    if (normalized == "familyhistory") {
-        return SortField::FamilyHistory;
-    }
-    if (normalized == "diseaserisk" || normalized == "risk") {
-        return SortField::DiseaseRisk;
-    }
-    throw std::invalid_argument("Unknown field name: " + fieldName);
-}
-
-Comparator makeComparator(SortField field, bool descending) {
-    return makeComparatorImpl(field, descending);
-}
-
-Comparator makeComparator(const std::string& fieldName, bool descending) {
-    return makeComparatorImpl(parseSortField(fieldName), descending);
-}
-
-std::vector<HealthRecord> loadHealthRecords(const std::string& csvPath) {
-    std::ifstream file(csvPath);
-    if (!file.is_open()) {
-        throw std::runtime_error("Unable to open CSV file: " + csvPath);
-    }
-
-    std::vector<HealthRecord> records;
-    std::string line;
-    if (!std::getline(file, line)) {
-        return records;
-    }
-
-    std::size_t lineNumber = 1;
-    while (std::getline(file, line)) {
-        ++lineNumber;
-        if (line.empty()) {
-            continue;
-        }
-
-        std::stringstream lineStream(line);
-        std::string token;
-        std::vector<std::string> tokens;
-        while (std::getline(lineStream, token, ',')) {
-            tokens.push_back(trimCopy(token));
-        }
-        if (tokens.size() != 16) {
-            continue;
-        }
-
-        HealthRecord record;
-        bool valid = true;
-        valid &= parseInt(tokens[0], record.id);
-        valid &= parseInt(tokens[1], record.age);
-        record.gender = tokens[2];
-        valid &= parseDouble(tokens[3], record.bmi);
-        valid &= parseInt(tokens[4], record.dailySteps);
-        valid &= parseDouble(tokens[5], record.sleepHours);
-        valid &= parseDouble(tokens[6], record.waterIntakeLiters);
-        valid &= parseInt(tokens[7], record.caloriesConsumed);
-        valid &= parseBool(tokens[8], record.smoker);
-        valid &= parseBool(tokens[9], record.alcohol);
-        valid &= parseInt(tokens[10], record.restingHeartRate);
-        valid &= parseInt(tokens[11], record.systolicBloodPressure);
-        valid &= parseInt(tokens[12], record.diastolicBloodPressure);
-        valid &= parseInt(tokens[13], record.cholesterol);
-        valid &= parseBool(tokens[14], record.familyHistory);
-        valid &= parseBool(tokens[15], record.diseaseRisk);
-
-        if (valid) {
-            records.push_back(std::move(record));
-        }
-    }
-
-    return records;
-}
-
-void mergeSort(std::vector<HealthRecord>& records, const Comparator& comparator) {
-    if (records.size() <= 1) {
-        return;
-    }
-    std::vector<HealthRecord> buffer(records.size());
-    mergeSortImpl(records, buffer, 0, records.size(), comparator);
-}
-
-std::vector<HealthRecord> mergeSortTopN(const std::vector<HealthRecord>& records, SortField field, bool descending, std::size_t topN) {
-    std::vector<HealthRecord> sorted = records;
-    mergeSort(sorted, makeComparator(field, descending));
-    if (sorted.size() > topN) {
-        sorted.resize(topN);
-    }
-    return sorted;
-}
-
-std::vector<HealthRecord> mergeSortTopN(const std::string& csvPath, SortField field, bool descending, std::size_t topN) {
-    const auto records = loadHealthRecords(csvPath);
-    return mergeSortTopN(records, field, descending, topN);
-}
+@@ -325,28 +327,26 @@ std::vector<HealthRecord> mergeSortTopN(const std::string& csvPath, SortField fi
 
 std::vector<HealthRecord> mergeSortTopN(const std::string& csvPath, const std::string& field, bool descending, std::size_t topN) {
     return mergeSortTopN(csvPath, parseSortField(field), descending, topN);
@@ -347,6 +237,4 @@ void printTopRecords(const std::vector<HealthRecord>& records, std::size_t topN,
     }
 }
 
-}
-
-}
+}  
