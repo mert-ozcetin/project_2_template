@@ -10,5 +10,9 @@
 using namespace std;
 
 int main(){
-    string ss;
+    string path = "../resources/health_lifestyle_dataset.csv";
+
+    unordered_map<int, Bucket> data = loadData(path);
+
+
  }
