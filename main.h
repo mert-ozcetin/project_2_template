@@ -325,13 +325,11 @@ void deleteId(int id, unordered_map<int, Bucket>& data) {
 bool checkid(int id,unordered_map<int,Bucket> &data) {
     for (auto it : data[MALE].PerVec) {
         if (id == it.id) {
-            cout <<"cannot insert, ID already present" <<endl;
              return false;
         }
     }
     for (auto it : data[FEMALE].PerVec) {
         if (id == it.id) {
-            cout <<"cannot insert, ID already present" <<endl;
             return false;
         }
     }
@@ -341,9 +339,6 @@ bool checkid(int id,unordered_map<int,Bucket> &data) {
 void insertPerson(Person p, unordered_map<int, Bucket> &data) {
     vector<int> othersbuck;
     othersbuck = otherbucketshelper(p);
-    // if (!checkid(p.id,data)) {
-    //     return;
-    // }
 
     if (p.gender) {
         data[MALE].PerVec.push_back(p);

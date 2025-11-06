@@ -23,11 +23,12 @@ void displaycoms() {
            "This only works when being asked non boolean values"<<endl;
 }
 //int small doesnt test if its in the data, just if its a valid id
-int validateintsmall(int type) {
+//type 1 is for id validation, type 2 will be for customize any other int will just be for a stat;
+int validateintsmall(int type,unordered_map<int,Bucket> &data) {
     int temp =0 ;
     string input;
     while (true) {
-        if (type ==1) {
+        if (type ==1 || type ==2) {
             cout <<"Enter id: "<<endl;
         }
         else {
@@ -53,6 +54,26 @@ int validateintsmall(int type) {
                     cout << "Invalid input. Must be greater than 0" <<endl<<endl;
                 }
             }
+            else if (type == 2) {
+                if (temp >= 0) {
+                    if (temp == 0) {
+                        cout << "Invalid input. Must be greater than 0" <<endl<<endl;
+                        continue;
+                    }
+                    if (!checkid(temp, data)) {
+                        return temp;
+                    }
+                    else {
+                        cout << "ID not in database" <<endl<<endl;
+                    }
+                }
+                else if (temp ==-1) {
+                    return -1;
+                }
+                else {
+                    cout << "Invalid input. Must be at least 0" <<endl<<endl;
+                }
+            }
             else {
                 if (temp >= 0) {
                     return temp;
@@ -65,9 +86,13 @@ int validateintsmall(int type) {
                 }
             }
         }
+        catch (out_of_range) {
+            cout<<"Invalid input, argument out of range. Please try again." <<endl<<endl;
+        }
         catch (...){
             cout << "Invalid input. Please try again." <<endl<<endl;
         }
+
     }
 }
 
@@ -87,7 +112,11 @@ int validateint(string field,unordered_map<int,Bucket> data = {}) {
             }
             if (temp >= 0) {
                 if (field == "id") {
-                    if (checkid(temp, data)) {
+                    if (temp == 0) {
+                        cout << "Invalid input. Must at greater than 0" <<endl<<endl;
+                        continue;
+                    }
+                    if (checkid(temp,data)) {
                         return temp;
                     }
                     else {
@@ -211,7 +240,7 @@ void createperson(Person& p,unordered_map<int,Bucket> data,int type) {
         p.id = validateint("id",data);
     }
     else {
-        p.id = validateintsmall(1);
+        p.id = validateintsmall(type,data);
     }
     if (exitInt(p.id)){return;}
     p.age = validateint("age");
@@ -282,13 +311,13 @@ int main(){
             exit = true;
         }
         else if (input =="display") {
-            id = validateintsmall(1);
+            id = validateintsmall(1,data);
             if (id != -1) {
                 display(id,data);
             }
         }
         else if (input == "delete") {
-            id = validateintsmall(1);
+            id = validateintsmall(1,data);
             if (id != -1) {
                 deleteId(id,data);
             }
@@ -302,7 +331,7 @@ int main(){
         }
         else if (input == "customize") {
             Person temp;
-            createperson(temp,data,0);
+            createperson(temp,data,2);
             if (!exitperson(temp)) {
                 customizeId(temp.id,data,temp);
             }
@@ -311,7 +340,7 @@ int main(){
         else if (input == "nhighest") {
             int field = get_field();
             if (field != -1) {
-                id = validateintsmall(0);
+                id = validateintsmall(0,data);
                 if (id != -1) {
                     nth_ind_highest(id,data,field);
                 }
@@ -321,7 +350,7 @@ int main(){
         else if (input == "nlowest") {
             int field = get_field();
             if (field != -1) {
-                id = validateintsmall(0);
+                id = validateintsmall(0,data);
                 if (id != -1) {
                     nth_ind_lowest(id,data,field);
                 }
